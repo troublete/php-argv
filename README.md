@@ -1,6 +1,6 @@
 # Argv
 
-> Functional CLI argument parsing
+> Functional CLI argument parsing ✨
 
 ## Install
 
