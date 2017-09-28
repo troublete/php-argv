@@ -1,6 +1,6 @@
 {
     "name": "troublete/argv",
-    "description": "Functional CLI argument parsing",
+    "description": "Small functional library to interpret CLI arguments",
     "type": "library",
     "require-dev": {
     	"php": ">=7",

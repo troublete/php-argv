@@ -1,6 +1,7 @@
 # Argv
+> Small functional library to interpret CLI arguments ✨
 
-> Functional CLI argument parsing ✨
+[![Build Status](https://travis-ci.org/troublete/argv.svg?branch=master)](https://travis-ci.org/troublete/argv)
 
 ## Install
 
