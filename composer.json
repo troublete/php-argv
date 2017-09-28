@@ -1,0 +1,26 @@
+{
+    "name": "troublete/argv",
+    "description": "Functional CLI argument parsing",
+    "type": "library",
+    "require-dev": {
+    	"php": ">=7",
+        "codeception/codeception": "~2.3"
+    },
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Willi Eßer",
+            "email": "willi.esser@troublete.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+    	"psr-4": {
+    		"Argv\\": "./"
+    	},
+    	"files": [
+    		"./arguments.php"
+    	]
+    },
+    "require": {}
+}
