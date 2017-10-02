@@ -56,9 +56,13 @@ function isFlagAlias(string $argument): bool {
  */
 function getFlags(array $arguments, array $aliases = []) {
 	$flags = new class {
-		public function add($flagName) {
+		public function add(string $flagName) {
 			$this->{$flagName} = true;
 			return $this;
+		}
+
+		public function __get(string $name): bool {
+			return isset($this->{$name}) && $this->{$name};
 		}
 	};
 
@@ -85,16 +89,16 @@ function getValues(array $arguments) {
 	$values = new class {
 		private $values = [];
 
-		public function add($value, $originalIndex) {
-			$this->values[$originalIndex] = $value; 
+		public function add(string $value, int $originalIndex) {
+			$this->values[$originalIndex] = $value;
 		}
 
-		public function all()
+		public function all(): array
 		{
 			return $this->values;
 		}
 
-		public function first()
+		public function first(): string
 		{
 			return current($this->values);
 		}

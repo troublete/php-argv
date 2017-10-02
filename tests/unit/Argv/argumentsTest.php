@@ -80,15 +80,15 @@ class argumentsTest extends \Codeception\Test\Unit
 	{
 		$flags = getFlags($this->cleaned, ['f' => 'flag']);
 		$this->assertEquals(true, $flags->flag);
-		$this->assertFalse(isset($flags->f));
+		$this->assertFalse($flags->f);
 
 		$flags = getFlags(['-f'], ['f' => 'flag']);
 		$this->assertEquals(true, $flags->flag);
-		$this->assertFalse(isset($flags->f));
+		$this->assertFalse($flags->f);
 
 		$flags = getFlags(['-f']);
-		$this->assertFalse(isset($flags->flag));
-		$this->assertFalse(isset($flags->f));
+		$this->assertFalse($flags->flag);
+		$this->assertFalse($flags->f);		
 	}
 
 	public function testGetValues()
