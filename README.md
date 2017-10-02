@@ -25,7 +25,7 @@ if ($flags->rainbow) {
 }
 ```
 
-On CLI execution like `$ php file-with-script.php --rainbow` the CLI will output `rainbows 🌈`. (see `examples` for a working example)
+On CLI execution like `$ php file-with-script.php --rainbow` the CLI will output `rainbow 🌈`. (see `examples` for a working example)
 
 ## API
 
@@ -53,7 +53,7 @@ Will determine if argument is a flag alias by checking if the first character is
 
 Will return an class with all flags (NOT aliases) as public properties, value set to true. If aliases are provided in the form like `['f' => 'flag']` the flag `flag` will be set on script call with only `-f`.
 
-### `getValues(array $arguments): class@anonymous`
+### `getValues(array $arguments): class@anonymous
 
 Will return all provided values encapsulated in a anonymous class (original index will be preserved). With calling `->all()` on the returned class an array with all values will be returned, where key is original index and value the value. With calling `->first()` the first value will be returned.
 
