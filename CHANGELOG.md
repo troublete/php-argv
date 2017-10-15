@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * `getCommand` as short handle for retrieving a command, if set, off clean arguments.
 
-* benchmarking tests
+* Argument call tests
 
 ### Changed
 
