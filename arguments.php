@@ -21,7 +21,7 @@ function reduceFlagName(string $argument): string {
 }
 
 /**
- * Function to check if the script call is references on a command
+ * Function to check if the script call references on a command
  * @param  array   $arguments
  * @return boolean
  */
@@ -55,9 +55,10 @@ function isFlagAlias(string $argument): bool {
  * @return class@anonymous
  */
 function getFlags(array $arguments, array $aliases = []) {
+	$flagValues = getValues($arguments);
 	$flags = new class {
-		public function add(string $flagName) {
-			$this->{$flagName} = true;
+		public function add(string $flagName, $value = true) {
+			$this->{$flagName} = $value;
 			return $this;
 		}
 
@@ -66,14 +67,16 @@ function getFlags(array $arguments, array $aliases = []) {
 		}
 	};
 
-	foreach ($arguments as $argument) {
+	foreach ($arguments as $index => $argument) {
+		$flagValue = $flagValues->get(++$index) ?? true;
+
 		if (isFlag($argument)) {
-			$flags->add(reduceFlagName($argument));
+			$flags->add(reduceFlagName($argument), $flagValue);
 		} else if (
 			isFlagAlias($argument)
 			&& isset($aliases[reduceFlagName($argument)])
 		) {
-			$flags->add($aliases[reduceFlagName($argument)]);
+			$flags->add($aliases[reduceFlagName($argument)], $flagValue);
 		}
 	}
 
@@ -91,6 +94,10 @@ function getValues(array $arguments) {
 
 		public function add(string $value, int $originalIndex) {
 			$this->values[$originalIndex] = $value;
+		}
+
+		public function get(int $index) {
+			return $this->values[$index] ?? null;
 		}
 
 		public function all(): array
@@ -111,4 +118,13 @@ function getValues(array $arguments) {
 	}
 	
 	return $values;	
+}
+
+/**
+ * Alias function to retrieve the command name of cleaned arguments
+ * @param  array  $arguments
+ * @return string
+ */
+function getCommand(array $arguments): string {
+	return getValues($arguments)->first();
 }

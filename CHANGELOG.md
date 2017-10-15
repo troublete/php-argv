@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 2017-10-15
+### Added
+
+* `getCommand` as short handle for retrieving a command, if set, off clean arguments.
+
+* benchmarking tests
+
+### Changed
+
+* `getFlags` to retrieve values following up on a flag as flag values
+
+* `getFlags` returned anonymous class method `add` to consider a second argument which is treated as flag value,
+defaults to `true`
+
+* API docs
+
 ## [1.1.0] - 2017-10-02
 ### Added
 

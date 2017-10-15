@@ -1,7 +1,7 @@
 <?php
 namespace Argv;
 
-use function Argv\{cleanArguments, reduceFlagName, isCommandCall, isFlag, isFlagAlias, getFlags, getValues};
+use function Argv\{cleanArguments, reduceFlagName, isCommandCall, isFlag, isFlagAlias, getFlags, getValues, getCommand};
 
 class argumentsTest extends \Codeception\Test\Unit
 {
@@ -14,6 +14,7 @@ class argumentsTest extends \Codeception\Test\Unit
 		'index.php',
 		'cmd',
 		'--flag',
+		'dms',
 		'-f',
 		'cmmd'
 	];
@@ -21,6 +22,7 @@ class argumentsTest extends \Codeception\Test\Unit
 	protected $cleaned = [
 		'cmd',
 		'--flag',
+		'dms',
 		'-f',
 		'cmmd'
 	];
@@ -76,10 +78,22 @@ class argumentsTest extends \Codeception\Test\Unit
 		$this->assertEquals(false, $isNotFlagAlias);
 	}
 
+	public function testGetFlagValues()
+	{
+		$flags = getFlags([
+			'--flag',
+			'flagValue',
+			'--someOtherFlag'
+		]);
+		
+		$this->assertEquals('flagValue', $flags->flag);
+		$this->assertTrue($flags->someOtherFlag);
+	}
+
 	public function testGetFlags()
 	{
 		$flags = getFlags($this->cleaned, ['f' => 'flag']);
-		$this->assertEquals(true, $flags->flag);
+		$this->assertEquals('cmmd', $flags->flag);
 		$this->assertFalse($flags->f);
 
 		$flags = getFlags(['-f'], ['f' => 'flag']);
@@ -89,6 +103,7 @@ class argumentsTest extends \Codeception\Test\Unit
 		$flags = getFlags(['-f']);
 		$this->assertFalse($flags->flag);
 		$this->assertFalse($flags->f);		
+
 	}
 
 	public function testGetValues()
@@ -97,10 +112,53 @@ class argumentsTest extends \Codeception\Test\Unit
 
 		$this->assertEquals([
 			0 => 'cmd',
-			3 => 'cmmd'
+			2 => 'dms',
+			4 => 'cmmd'
 		], $values->all());
 
-		$this->assertCount(2, $values->all());
+		$this->assertCount(3, $values->all());
 		$this->assertEquals('cmd', $values->first());
+	}
+
+	public function testCliArgumentCallsBenchmark()
+	{
+		$args = [
+			'someCommand',
+			'--flag',
+			'someValue',
+			'-f',
+			'shortValue',
+			'--new'
+		];
+
+		$isCommand = isCommandCall($args);
+		$commandName = getCommand($args);
+		$flags = getFlags($args);
+
+		$this->assertTrue($isCommand);
+		$this->assertTrue($flags->new);
+		$this->assertFalse($flags->notSetFlag);
+		$this->assertEquals('someCommand', $commandName);
+		$this->assertEquals('someValue', $flags->flag);
+
+		$flags = getFlags($args, ['f' => 'flag']);
+		$this->assertEquals('shortValue', $flags->flag);
+
+		$args = [
+			'--flag',
+			'someValue',
+			'-f',
+			'shortValue'
+		];
+
+		$isCommand = isCommandCall($args);
+		$commandName = getCommand($args);
+		$flags = getFlags($args);
+
+		$this->assertFalse($isCommand);
+		$this->assertEquals('someValue', $flags->flag);
+
+		$flags = getFlags($args, ['f' => 'flag']);
+		$this->assertEquals('shortValue', $flags->flag);
 	}
 }
